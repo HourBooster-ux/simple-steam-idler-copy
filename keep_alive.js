@@ -1,6 +1,6 @@
 const http = require('http');
 
-const ports = process.env.PORT || 8080;
+const ports = process.env.PORT || 3000;
 
 ports.forEach(port => {
   http.createServer((req, res) => {
