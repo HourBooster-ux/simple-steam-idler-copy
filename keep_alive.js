@@ -1,10 +1,8 @@
-var http = require('http');
+const http = require('http');
 
-const PORT = process.env.PORT || 3000;
-
-http.createServer(function (req, res) {
-  res.write("I'm alive");
-  res.end();
-}).listen(PORT, () => {
-  console.log(`Keep-alive server running on port ${PORT}`);
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('OK');
+}).listen(8080, () => {
+  console.log('Keep-alive server running on port 8080');
 });
