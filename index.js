@@ -1,41 +1,33 @@
-const steamUser = require('steam-user');
+const SteamUser = require('steam-user');
 const keep_alive = require('./keep_alive.js');
 
 const games = [730, 440, 570];
 const status = 1;
 
-const accounts = [];
+const clients = [];
 
-// Dynamically collect accounts from env variables
 for (let i = 1; ; i++) {
   const username = process.env[`username${i}`];
   const password = process.env[`password${i}`];
 
-  if (!username || !password) break;  // stop if no more accounts
+  if (!username || !password) break;
 
-  accounts.push({ username, password });
-}
+  const client = new SteamUser();
+  clients.push(client);
 
-if (accounts.length === 0) {
-  console.error('No accounts found in environment variables.');
-  process.exit(1);
-}
+  client.logOn({ accountName: username, password });
 
-accounts.forEach(({ username, password }) => {
-  const user = new steamUser();
-
-  user.logOn({ accountName: username, password: password });
-
-  user.on('loggedOn', () => {
+  client.on('loggedOn', () => {
     console.log(`${username} - Successfully logged on`);
-    user.setPersona(status);
-    user.gamesPlayed(games);
+    client.setPersona(status);
+    client.gamesPlayed(games);
   });
 
-  user.on('error', (err) => {
-    console.error(`${username} - Error:`, err);
+  client.on('error', (err) => {
+    console.error(`${username} - Error:`, err.message);
   });
-});
 
-
-
+  client.on('disconnected', () => {
+    console.warn(`${username} - Disconnected`);
+  });
+}
