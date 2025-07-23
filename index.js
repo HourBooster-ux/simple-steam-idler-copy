@@ -1,5 +1,5 @@
 const SteamUser = require('steam-user');
-const keep_alive = require('./keep_alive.js');
+// const keep_alive = require('./keep_alive.js');
 
 const games = [730, 440, 570];
 const status = 1;
